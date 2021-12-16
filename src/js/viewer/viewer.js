@@ -1748,21 +1748,23 @@ papaya.viewer.Viewer.prototype.keyDownEvent = function (ke) {
         (keyCode === papaya.viewer.Viewer.KEYCODE_SINGLE_QUOTE)) {
         this.incrementAxial(false);
     } else if (keyCode === papaya.viewer.Viewer.KEYCODE_INCREMENT_MAIN) {
-        if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_AXIAL) {
-            this.incrementAxial(false);
-        } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_CORONAL) {
-            this.incrementCoronal(false);
-        } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_SAGITTAL) {
-            this.incrementSagittal(true);
-        }
+        // BrainGraph handles this
+        // if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_AXIAL) {
+        //     this.incrementAxial(false);
+        // } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_CORONAL) {
+        //     this.incrementCoronal(false);
+        // } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_SAGITTAL) {
+        //     this.incrementSagittal(true);
+        // }
     } else if (keyCode === papaya.viewer.Viewer.KEYCODE_DECREMENT_MAIN) {
-        if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_AXIAL) {
-            this.incrementAxial(true);
-        } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_CORONAL) {
-            this.incrementCoronal(true);
-        } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_SAGITTAL) {
-            this.incrementSagittal(false);
-        }
+        // BrainGraph handles this
+        // if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_AXIAL) {
+        //     this.incrementAxial(true);
+        // } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_CORONAL) {
+        //     this.incrementCoronal(true);
+        // } else if (this.mainImage.sliceDirection === papaya.viewer.ScreenSlice.DIRECTION_SAGITTAL) {
+        //     this.incrementSagittal(false);
+        // }
     } else if (keyCode === papaya.viewer.Viewer.KEYCODE_TOGGLE_CROSSHAIRS) {
         if (this.container.preferences.showCrosshairs === "Yes") {
             this.toggleMainCrosshairs = !this.toggleMainCrosshairs;
