@@ -246,11 +246,11 @@ papaya.viewer.Viewer.drawRoundRect = function (ctx, x, y, width, height, radius,
 
 /*** Prototype Methods ***/
 
-papaya.viewer.Viewer.prototype.loadImage = function (refs, forceUrl, forceEncode, forceBinary) {
+papaya.viewer.Viewer.prototype.loadImage = function (refs, forceUrl, forceEncode, forceBinary, imageIndex) {
     if (this.screenVolumes.length === 0) {
-        this.loadBaseImage(refs, forceUrl, forceEncode, forceBinary);
+        this.loadBaseImage(refs, forceUrl, forceEncode, forceBinary, imageIndex);
     } else {
-        this.loadOverlay(refs, forceUrl, forceEncode, forceBinary);
+        this.loadOverlay(refs, forceUrl, forceEncode, forceBinary, imageIndex);
     }
 };
 
@@ -272,7 +272,7 @@ papaya.viewer.Viewer.prototype.showDialog = function (title, data, datasource, c
 
 
 
-papaya.viewer.Viewer.prototype.loadBaseImage = function (refs, forceUrl, forceEncode, forceBinary) {
+papaya.viewer.Viewer.prototype.loadBaseImage = function (refs, forceUrl, forceEncode, forceBinary, imageIndex) {
     var ctr, imageRefs = [], loadableImages = this.container.findLoadableImages(refs);
     this.volume = new papaya.volume.Volume(this.container.display, this, this.container.params);
 
@@ -307,7 +307,7 @@ papaya.viewer.Viewer.prototype.loadBaseImage = function (refs, forceUrl, forceEn
 
         this.volume.readEncodedData(imageRefs, papaya.utilities.ObjectUtils.bind(this, this.initializeViewer));
     } else if (forceUrl) {
-        this.volume.readURLs(refs, papaya.utilities.ObjectUtils.bind(this, this.initializeViewer));
+        this.volume.readURLs(refs, papaya.utilities.ObjectUtils.bind(this, this.initializeViewer), imageIndex);
     } else if ((loadableImages !== null) && (loadableImages[0].url !== undefined)) {
         if (loadableImages) {
             for (ctr = 0; ctr < loadableImages.length; ctr += 1) {
@@ -315,7 +315,7 @@ papaya.viewer.Viewer.prototype.loadBaseImage = function (refs, forceUrl, forceEn
             }
         }
 
-        this.volume.readURLs(imageRefs, papaya.utilities.ObjectUtils.bind(this, this.initializeViewer));
+        this.volume.readURLs(imageRefs, papaya.utilities.ObjectUtils.bind(this, this.initializeViewer), imageIndex);
     } else {
         this.volume.readFiles(refs, papaya.utilities.ObjectUtils.bind(this, this.initializeViewer));
     }
@@ -323,7 +323,7 @@ papaya.viewer.Viewer.prototype.loadBaseImage = function (refs, forceUrl, forceEn
 
 
 
-papaya.viewer.Viewer.prototype.loadOverlay = function (refs, forceUrl, forceEncode, forceBinary) {
+papaya.viewer.Viewer.prototype.loadOverlay = function (refs, forceUrl, forceEncode, forceBinary, imageIndex) {
     var imageRefs, loadableImage = this.container.findLoadableImage(refs);
     this.loadingVolume = new papaya.volume.Volume(this.container.display, this, this.container.params);
 
@@ -357,9 +357,9 @@ papaya.viewer.Viewer.prototype.loadOverlay = function (refs, forceUrl, forceEnco
 
             this.loadingVolume.readEncodedData(imageRefs, papaya.utilities.ObjectUtils.bind(this, this.initializeOverlay));
         } else if (forceUrl) {
-            this.loadingVolume.readURLs(refs, papaya.utilities.ObjectUtils.bind(this, this.initializeOverlay));
+            this.loadingVolume.readURLs(refs, papaya.utilities.ObjectUtils.bind(this, this.initializeOverlay), imageIndex);
         } else if ((loadableImage !== null) && (loadableImage.url !== undefined)) {
-            this.loadingVolume.readURLs([loadableImage.url], papaya.utilities.ObjectUtils.bind(this, this.initializeOverlay));
+            this.loadingVolume.readURLs([loadableImage.url], papaya.utilities.ObjectUtils.bind(this, this.initializeOverlay), imageIndex);
         } else {
             this.loadingVolume.readFiles(refs, papaya.utilities.ObjectUtils.bind(this, this.initializeOverlay));
         }
@@ -746,7 +746,7 @@ papaya.viewer.Viewer.prototype.initializeOverlay = function () {
         this.container.clearParams();
         this.loadingVolume = null;
     } else {
-        screenParams = this.container.params[this.loadingVolume.fileName];
+        screenParams = this.container.params.images[this.loadingVolume.imageIndex].params;
         parametric = (screenParams && screenParams.parametric);
         dti = (screenParams && screenParams.dtiMod);
 

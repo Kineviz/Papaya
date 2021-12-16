@@ -66,7 +66,7 @@ papaya.Container = papaya.Container || function (containerHtml) {
 
 /*** Static Pseudo-constants ***/
 
-papaya.Container.LICENSE_TEXT = "<p>THIS PRODUCT IS NOT FOR CLINICAL USE.<br /><br />" +
+papaya.Container.LICENSE_TEXT = "<p>THIS PRODUCT IS FOR CLINICAL USE.<br /><br />" +
     "This software is available for use, as is, free of charge.  The software and data derived from this software " +
     "may not be used for clinical purposes.<br /><br />" +
     "The authors of this software make no representations or warranties about the suitability of the software, " +
@@ -404,13 +404,13 @@ papaya.Container.buildContainer = function (containerHTML, params, replaceIndex)
 
             container.viewer.loadImage(imageRefs, true, false, false);
         } else if (container.params.images) {
-            imageRefs = container.params.images[0];
+            imageRefs = container.params.images[0].url;
             if (!(imageRefs instanceof Array)) {
                 imageRefs = [];
-                imageRefs[0] = container.params.images[0];
+                imageRefs[0] = container.params.images[0].url;
             }
 
-            container.viewer.loadImage(imageRefs, true, false, false);
+            container.viewer.loadImage(imageRefs, true, false, false, 0);
         } else if (container.params.encodedImages) {
             imageRefs = container.params.encodedImages[0];
             if (!(imageRefs instanceof Array)) {
@@ -1227,14 +1227,14 @@ papaya.Container.prototype.loadNextImage = function () {
     if (this.params.images) {
         if (this.loadingImageIndex < this.params.images.length) {
             loadingNext = true;
-            imageRefs = this.params.images[this.loadingImageIndex];
+            imageRefs = this.params.images[this.loadingImageIndex].url;
 
             if (!(imageRefs instanceof Array)) {
                 imageRefs = [];
-                imageRefs[0] = this.params.images[this.loadingImageIndex];
+                imageRefs[0] = this.params.images[this.loadingImageIndex].url;
             }
 
-            this.viewer.loadImage(imageRefs, true, false, false);
+            this.viewer.loadImage(imageRefs, true, false, false, this.loadingImageIndex);
             this.loadingImageIndex += 1;
         } else {
             this.params.loadedImages = this.params.images;

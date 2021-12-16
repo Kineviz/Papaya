@@ -43,7 +43,7 @@ papaya.viewer.ScreenVolume = papaya.viewer.ScreenVolume || function (vol, params
     this.seriesLabels = this.volume.getSeriesLabels();
     this.staticIcon = null;
 
-    var screenParams = params[this.volume.fileName];
+    var screenParams = params.images[this.volume.imageIndex].params;
     if (screenParams) {
         if (screenParams.icon) {
             this.staticIcon = screenParams.icon;

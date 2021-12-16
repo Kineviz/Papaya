@@ -112,10 +112,11 @@ papaya.volume.Volume.prototype.readNextFile = function (vol, index) {
 
 
 
-papaya.volume.Volume.prototype.readURLs = function (urls, callback) {
+papaya.volume.Volume.prototype.readURLs = function (urls, callback, imageIndex) {
     var self = this;
     this.urls = urls;
     this.fileName = urls[0].substr(urls[0].lastIndexOf("/") + 1, urls[0].length);
+    this.imageIndex = imageIndex;
     this.onFinishedRead = callback;
     this.compressed = this.fileIsCompressed(this.fileName);
 
