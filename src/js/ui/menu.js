@@ -23,6 +23,7 @@ papaya.ui.Menu = papaya.ui.Menu || function (viewer, menuData, callback, dataSou
     this.rangeItem = null;
     this.menuOnHover = menuData.menuOnHover;
     this.contextMenu = false;
+    this.tooltip = menuData.tooltip;
 
     if ((modifier === undefined) || (modifier === null)) {
         this.imageIndex = -1;
@@ -113,11 +114,11 @@ papaya.ui.Menu.prototype.buildMenuButton = function () {
     html = null;
 
     if (this.icons) {
-        html = "<span id='" + this.buttonId + "' class='" + PAPAYA_MENU_UNSELECTABLE + " " + PAPAYA_MENU_ICON_CSS +
+        html = "<span " + (this.tooltip ? 'data-tippy-content="' + this.tooltip + '" ' : "") + "id='" + this.buttonId + "' class='" + PAPAYA_MENU_UNSELECTABLE + " " + PAPAYA_MENU_ICON_CSS +
             " " + (this.isImageButton ? PAPAYA_MENU_BUTTON_CSS : "") + "'" +
             (this.isRight ? " style='float:right'" : "") + ">" + "<img class='" + PAPAYA_MENU_UNSELECTABLE +
             "' style='width:" + papaya.viewer.ColorTable.ICON_SIZE + "px; height:" +
-            papaya.viewer.ColorTable.ICON_SIZE + "px; vertical-align:bottom; ";
+            papaya.viewer.ColorTable.ICON_SIZE + "px; vertical-align:bottom; "
 
         if (!this.isSurfaceButton && this.dataSource.isSelected(parseInt(this.imageIndex, 10))) {
             html += "border:2px solid #FF5A3D;background-color:#eeeeee;padding:1px;";

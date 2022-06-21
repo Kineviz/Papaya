@@ -42,9 +42,14 @@ papaya.viewer.ScreenVolume = papaya.viewer.ScreenVolume || function (vol, params
     this.currentCoord = currentCoord;
     this.seriesLabels = this.volume.getSeriesLabels();
     this.staticIcon = null;
+    this.tooltip = null;
 
     var screenParams = params.images[this.volume.imageIndex].params;
     if (screenParams) {
+        if (screenParams.tooltip) {
+            this.tooltip = screenParams.tooltip;
+        }
+
         if (screenParams.icon) {
             this.staticIcon = screenParams.icon;
         }

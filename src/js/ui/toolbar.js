@@ -585,7 +585,7 @@ papaya.ui.Toolbar.prototype.doUpdateImageButtons = function () {
 
             data = {
                 "menus" : [
-                    {"label": "ImageButton", "icons": [dataUrl], "items": null, "imageButton": true}
+                    {"label": "ImageButton", "icons": [dataUrl], "items": null, "imageButton": true, "tooltip": screenVol.tooltip}
                 ]
             };
 
