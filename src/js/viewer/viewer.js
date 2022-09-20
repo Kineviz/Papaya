@@ -746,7 +746,7 @@ papaya.viewer.Viewer.prototype.initializeOverlay = function () {
         this.container.clearParams();
         this.loadingVolume = null;
     } else {
-        screenParams = this.container.params.images[this.loadingVolume.imageIndex].params;
+        screenParams = this.container.params.images ? this.container.params.images[this.loadingVolume.imageIndex].params : {};
         parametric = (screenParams && screenParams.parametric);
         dti = (screenParams && screenParams.dtiMod);
 

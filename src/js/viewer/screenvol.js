@@ -44,97 +44,99 @@ papaya.viewer.ScreenVolume = papaya.viewer.ScreenVolume || function (vol, params
     this.staticIcon = null;
     this.tooltip = null;
 
-    var screenParams = params.images[this.volume.imageIndex].params;
-    if (screenParams) {
-        if (screenParams.tooltip) {
-            this.tooltip = screenParams.tooltip;
-        }
-
-        if (screenParams.icon) {
-            this.staticIcon = screenParams.icon;
-        }
-
-        if (screenParams.interpolation !== undefined) {
-            this.interpolation = screenParams.interpolation;
-        }
-
-        if (screenParams.dti !== undefined) {
-            this.dti = screenParams.dti;
-
-            if (this.dti && (this.volume.numTimepoints !== 3)) {
-                this.error = new Error("DTI vector series must have 3 series points!");
+    if (params.images) {
+        var screenParams = params.images[this.volume.imageIndex].params;
+        if (screenParams) {
+            if (screenParams.tooltip) {
+                this.tooltip = screenParams.tooltip;
             }
 
-            if (this.dti) {
-                this.dtiLines = screenParams.dtiLines;
-                this.dtiColors = screenParams.dtiColors;
+            if (screenParams.icon) {
+                this.staticIcon = screenParams.icon;
+            }
 
-                if (!this.dtiLines && !this.dtiColors) {
-                    this.dtiColors = true;
+            if (screenParams.interpolation !== undefined) {
+                this.interpolation = screenParams.interpolation;
+            }
+
+            if (screenParams.dti !== undefined) {
+                this.dti = screenParams.dti;
+
+                if (this.dti && (this.volume.numTimepoints !== 3)) {
+                    this.error = new Error("DTI vector series must have 3 series points!");
                 }
 
-                this.initDTI();
-            }
-        }
+                if (this.dti) {
+                    this.dtiLines = screenParams.dtiLines;
+                    this.dtiColors = screenParams.dtiColors;
 
-        if ((screenParams.min !== undefined) && (screenParams.max !== undefined)) {
-            if (parametric) {
-                this.screenMin = -1 * Math.abs(screenParams.min);
-                this.screenMax = -1 * Math.abs(screenParams.max);
+                    if (!this.dtiLines && !this.dtiColors) {
+                        this.dtiColors = true;
+                    }
+
+                    this.initDTI();
+                }
+            }
+
+            if ((screenParams.min !== undefined) && (screenParams.max !== undefined)) {
+                if (parametric) {
+                    this.screenMin = -1 * Math.abs(screenParams.min);
+                    this.screenMax = -1 * Math.abs(screenParams.max);
+                } else {
+                    this.screenMin = screenParams.min;
+                    this.screenMax = screenParams.max;
+                }
             } else {
-                this.screenMin = screenParams.min;
-                this.screenMax = screenParams.max;
+                this.findDisplayRange(parametric, screenParams);
             }
-        } else {
-            this.findDisplayRange(parametric, screenParams);
-        }
 
-        if (parametric) {
-            if (screenParams.negative_lut !== undefined) {
-                this.lutName = screenParams.negative_lut;
-                this.colorTable = new papaya.viewer.ColorTable(this.lutName, baseImage);
-            }
-        } else {
-            if (screenParams.lut !== undefined) {
-                if (typeof screenParams.lut === 'string' || screenParams.lut instanceof String) {
-                    this.lutName = screenParams.lut;
+            if (parametric) {
+                if (screenParams.negative_lut !== undefined) {
+                    this.lutName = screenParams.negative_lut;
                     this.colorTable = new papaya.viewer.ColorTable(this.lutName, baseImage);
-                } else {
-                    this.lutName = "Object";
-                    this.colorTable = screenParams.lut;
                 }
-            }
-        }
-
-        if ((screenParams.alpha !== undefined) && !baseImage) {
-            this.alpha = screenParams.alpha;
-        }
-
-        if (screenParams.labels && !this.seriesLabels) {
-            this.seriesLabels = screenParams.labels;
-        }
-
-        if (baseImage) {
-            if ((screenParams.rotation !== undefined) && screenParams.rotation.length && (screenParams.rotation.length === 3)) {
-                this.rotationX = (Math.min(Math.max(screenParams.rotation[0], -90), 90) + 90) / 180;
-                this.rotationY = (Math.min(Math.max(screenParams.rotation[1], -90), 90) + 90) / 180;
-                this.rotationZ = (Math.min(Math.max(screenParams.rotation[2], -90), 90) + 90) / 180;
-            }
-
-            if (screenParams.rotationPoint) {
-                if (screenParams.rotationPoint.toLowerCase() === "origin") {
-                    this.rotationAbout = "Rotate About Origin";
-                } else if (screenParams.rotationPoint.toLowerCase() === "crosshairs") {
-                    this.rotationAbout = "Rotate About Crosshairs";
-                } else {
-                    this.rotationAbout = "Rotate About Center";
+            } else {
+                if (screenParams.lut !== undefined) {
+                    if (typeof screenParams.lut === 'string' || screenParams.lut instanceof String) {
+                        this.lutName = screenParams.lut;
+                        this.colorTable = new papaya.viewer.ColorTable(this.lutName, baseImage);
+                    } else {
+                        this.lutName = "Object";
+                        this.colorTable = screenParams.lut;
+                    }
                 }
             }
 
-            this.updateTransform();
+            if ((screenParams.alpha !== undefined) && !baseImage) {
+                this.alpha = screenParams.alpha;
+            }
+
+            if (screenParams.labels && !this.seriesLabels) {
+                this.seriesLabels = screenParams.labels;
+            }
+
+            if (baseImage) {
+                if ((screenParams.rotation !== undefined) && screenParams.rotation.length && (screenParams.rotation.length === 3)) {
+                    this.rotationX = (Math.min(Math.max(screenParams.rotation[0], -90), 90) + 90) / 180;
+                    this.rotationY = (Math.min(Math.max(screenParams.rotation[1], -90), 90) + 90) / 180;
+                    this.rotationZ = (Math.min(Math.max(screenParams.rotation[2], -90), 90) + 90) / 180;
+                }
+
+                if (screenParams.rotationPoint) {
+                    if (screenParams.rotationPoint.toLowerCase() === "origin") {
+                        this.rotationAbout = "Rotate About Origin";
+                    } else if (screenParams.rotationPoint.toLowerCase() === "crosshairs") {
+                        this.rotationAbout = "Rotate About Crosshairs";
+                    } else {
+                        this.rotationAbout = "Rotate About Center";
+                    }
+                }
+
+                this.updateTransform();
+            }
+        } else {
+            this.findDisplayRange(parametric, {});
         }
-    } else {
-        this.findDisplayRange(parametric, {});
     }
 
     this.negative = false;
