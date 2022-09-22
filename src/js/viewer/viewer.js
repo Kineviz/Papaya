@@ -1934,53 +1934,53 @@ papaya.viewer.Viewer.prototype.mouseDownEvent = function (me) {
 
             this.findClickedSlice(this, this.previousMousePosition.x, this.previousMousePosition.y);
 
-            if (((me.button === 2) || this.isControlKeyDown || this.isLongTouch) && this.container.contextManager && (this.selectedSlice === this.mainImage) && (this.mainImage === this.surfaceView)) {
-                this.contextMenuMousePositionX = this.previousMousePosition.x - this.canvasRect.left;
-                this.contextMenuMousePositionY = this.previousMousePosition.y - this.canvasRect.top;
+            // if (((me.button === 2) || this.isControlKeyDown || this.isLongTouch) && this.container.contextManager && (this.selectedSlice === this.mainImage) && (this.mainImage === this.surfaceView)) {
+            //     this.contextMenuMousePositionX = this.previousMousePosition.x - this.canvasRect.left;
+            //     this.contextMenuMousePositionY = this.previousMousePosition.y - this.canvasRect.top;
 
-                if (this.container.contextManager.prefersColorPicking && this.container.contextManager.prefersColorPicking()) {
-                    pickedColor = this.surfaceView.pickColor(this.contextMenuMousePositionX, this.contextMenuMousePositionY);
-                    menuData = this.container.contextManager.getContextAtColor(pickedColor[0], pickedColor[1], pickedColor[2]);
-                }
+            //     if (this.container.contextManager.prefersColorPicking && this.container.contextManager.prefersColorPicking()) {
+            //         pickedColor = this.surfaceView.pickColor(this.contextMenuMousePositionX, this.contextMenuMousePositionY);
+            //         menuData = this.container.contextManager.getContextAtColor(pickedColor[0], pickedColor[1], pickedColor[2]);
+            //     }
 
-                if (menuData) {
-                    this.isContextMode = true;
-                    menu = this.container.toolbar.buildMenu(menuData, null, null, null, true);
-                    papaya.ui.Toolbar.applyContextState(menu);
-                    draggingStarted = false;
-                    menu.showMenu();
-                    this.showingContextMenu = true;
-                }
+            //     if (menuData) {
+            //         this.isContextMode = true;
+            //         menu = this.container.toolbar.buildMenu(menuData, null, null, null, true);
+            //         papaya.ui.Toolbar.applyContextState(menu);
+            //         draggingStarted = false;
+            //         menu.showMenu();
+            //         this.showingContextMenu = true;
+            //     }
 
-                this.isContextMode = true;
-            } else if (((me.button === 2) || this.isControlKeyDown || this.isLongTouch) && this.container.contextManager && (this.selectedSlice === this.mainImage)) {
-                if (this.isLongTouch) {
-                    var point = this.convertCurrentCoordinateToScreen(this.mainImage);
-                    this.contextMenuMousePositionX = point.x;
-                    this.contextMenuMousePositionY = point.y;
-                    menuData = this.container.contextManager.getContextAtImagePosition(this.currentCoord.x, this.currentCoord.y, this.currentCoord.z);
-                } else {
-                    this.contextMenuMousePositionX = this.previousMousePosition.x - this.canvasRect.left;
-                    this.contextMenuMousePositionY = this.previousMousePosition.y - this.canvasRect.top;
-                    menuData = this.container.contextManager.getContextAtImagePosition(this.cursorPosition.x, this.cursorPosition.y, this.cursorPosition.z);
-                }
+            //     this.isContextMode = true;
+            // } else if (((me.button === 2) || this.isControlKeyDown || this.isLongTouch) && this.container.contextManager && (this.selectedSlice === this.mainImage)) {
+            //     if (this.isLongTouch) {
+            //         var point = this.convertCurrentCoordinateToScreen(this.mainImage);
+            //         this.contextMenuMousePositionX = point.x;
+            //         this.contextMenuMousePositionY = point.y;
+            //         menuData = this.container.contextManager.getContextAtImagePosition(this.currentCoord.x, this.currentCoord.y, this.currentCoord.z);
+            //     } else {
+            //         this.contextMenuMousePositionX = this.previousMousePosition.x - this.canvasRect.left;
+            //         this.contextMenuMousePositionY = this.previousMousePosition.y - this.canvasRect.top;
+            //         menuData = this.container.contextManager.getContextAtImagePosition(this.cursorPosition.x, this.cursorPosition.y, this.cursorPosition.z);
+            //     }
 
-                if (menuData) {
-                    this.isContextMode = true;
-                    menu = this.container.toolbar.buildMenu(menuData, null, null, null, true);
-                    papaya.ui.Toolbar.applyContextState(menu);
-                    draggingStarted = false;
-                    menu.showMenu();
-                    this.showingContextMenu = true;
-                }
-            } else if (((me.button === 2) || this.isControlKeyDown) && !this.currentScreenVolume.rgb) {
-                this.isWindowControl = true;
+            //     if (menuData) {
+            //         this.isContextMode = true;
+            //         menu = this.container.toolbar.buildMenu(menuData, null, null, null, true);
+            //         papaya.ui.Toolbar.applyContextState(menu);
+            //         draggingStarted = false;
+            //         menu.showMenu();
+            //         this.showingContextMenu = true;
+            //     }
+            // } else if (((me.button === 2) || this.isControlKeyDown) && !this.currentScreenVolume.rgb) {
+            //     this.isWindowControl = true;
 
-                if (this.container.showImageButtons && (this.container.showControlBar || !this.container.kioskMode) &&
-                        this.screenVolumes[this.getCurrentScreenVolIndex()].supportsDynamicColorTable()) {
-                    this.container.toolbar.showImageMenu(this.getCurrentScreenVolIndex());
-                }
-            } else if (this.isAltKeyDown && this.selectedSlice) {
+            //     if (this.container.showImageButtons && (this.container.showControlBar || !this.container.kioskMode) &&
+            //             this.screenVolumes[this.getCurrentScreenVolIndex()].supportsDynamicColorTable()) {
+            //         this.container.toolbar.showImageMenu(this.getCurrentScreenVolIndex());
+            //     }
+            if (this.isAltKeyDown && this.selectedSlice) {
                 this.isZoomMode = true;
 
                 if (this.selectedSlice === this.surfaceView) {
