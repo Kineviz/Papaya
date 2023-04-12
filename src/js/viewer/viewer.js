@@ -1190,10 +1190,10 @@ papaya.viewer.Viewer.prototype.onDrawViewer = function (callback) {
 
 
 papaya.viewer.Viewer.prototype.withSlice = function (options, callback) {
-    let {slice, canvas, volume = {}} = options
+    let {plane, canvas, volume = {}} = options
 
-    if (typeof slice === "string") {
-        slice = this[slice + 'Slice'];
+    if (typeof plane === "string") {
+        plane = this[plane + 'Slice'];
     }
 
     if (typeof canvas === "string") {
@@ -1203,7 +1203,7 @@ papaya.viewer.Viewer.prototype.withSlice = function (options, callback) {
     // Backup screen volumes and then set options
     Object.keys(volume).forEach((index) => {
         const key = Number(index);
-        const vol = slice.screenVolumes[key];
+        const vol = plane.screenVolumes[key];
         const volOptions = volume[key];
         Object.keys(volOptions).forEach((option) => {
             volOptions[option + "Old"] = vol[option];
@@ -1224,45 +1224,53 @@ papaya.viewer.Viewer.prototype.withSlice = function (options, callback) {
         finalTransform: cloneTransform(slice.finalTransform),
         finalTransform2: cloneTransform(slice.finalTransform2),
     })
-    const sliceBackup = cloneSlice(slice);
+    const sliceBackup = cloneSlice(plane);
 
     this.getTransformParameters(
-        slice,
+        plane,
         canvas.clientWidth,
         false,
         1
     )
-    slice.screenOffsetX = 0;
-    slice.screenOffsetY = 0;
-    slice.updateFinalTransform();
-    if (slice === this.axialSlice)
-        slice.repaint(this.currentCoord.z, true, this.worldSpace);
-    if (slice === this.coronalSlice)
-        slice.repaint(this.currentCoord.y, true, this.worldSpace);
-    if (slice === this.sagittalSlice)
-        slice.repaint(this.currentCoord.x, true, this.worldSpace);
+    plane.screenOffsetX = 0;
+    plane.screenOffsetY = 0;
+    plane.updateFinalTransform();
+    if (plane === this.axialSlice)
+        plane.repaint(this.currentCoord.z, true, this.worldSpace);
+    if (plane === this.coronalSlice)
+        plane.repaint(this.currentCoord.y, true, this.worldSpace);
+    if (plane === this.sagittalSlice)
+        plane.repaint(this.currentCoord.x, true, this.worldSpace);
 
-    callback(slice, canvas.getContext('2d'));
+    callback(plane, canvas.getContext('2d'));
 
     // Restore slice transforms
-    Object.assign(slice, sliceBackup);
+    Object.assign(plane, sliceBackup);
 
     // Restore screen volumes
     Object.keys(volume).forEach((index) => {
         const key = Number(index);
-        const vol = slice.screenVolumes[key];
+        const vol = plane.screenVolumes[key];
         const volOptions = volume[key];
         Object.keys(volOptions).forEach((option) => {
             vol[option] = volOptions[option + "Old"];
         });
     })
 
-    if (slice === this.axialSlice)
-        slice.repaint(this.currentCoord.z, true, this.worldSpace);
-    if (slice === this.coronalSlice)
-        slice.repaint(this.currentCoord.y, true, this.worldSpace);
-    if (slice === this.sagittalSlice)
-        slice.repaint(this.currentCoord.x, true, this.worldSpace);
+    if (plane === this.axialSlice)
+        plane.repaint(this.currentCoord.z, true, this.worldSpace);
+    if (plane === this.coronalSlice)
+        plane.repaint(this.currentCoord.y, true, this.worldSpace);
+    if (plane === this.sagittalSlice)
+        plane.repaint(this.currentCoord.x, true, this.worldSpace);
+}
+
+
+papaya.viewer.Viewer.prototype.makeView = function (options) {
+    return new papaya.viewer.ScreenSliceView({
+        ...options,
+        viewer: this,
+    })
 }
 
 
